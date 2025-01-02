@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sun Coast Tree Services - Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: #2C3E50;
+            color: white;
+            padding-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .navbar {
+            margin-left: var(--sidebar-width);
+        }
+        
+        .sidebar-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-link:hover {
+            background: #34495E;
+            color: #FFC107;
+        }
+        
+        .card {
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-card {
+            background: linear-gradient(45deg, #2C3E50, #3498DB);
+            color: white;
+        }
+        
+        #calendar .calendar-day {
+            height: 100px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .task {
+            background: #f8f9fa;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .task:hover {
+            background: #e9ecef;
+        }
+
+        .status-pending { background-color: #ffeeba; }
+        .status-in-progress { background-color: #b8daff; }
+        .status-completed { background-color: #c3e6cb; }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-left: calc(-1 * var(--sidebar-width));
+            }
+            .main-content, .navbar {
+                margin-left: 0;
+            }
+            .sidebar.active {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="text-center mb-4">
+            <img src="/api/placeholder/150/50" alt="Logo" class="mb-3">
+            <h5>Sun Coast Tree Services</h5>
+        </div>
+        <nav>
+            <a href="#dashboard" class="sidebar-link active"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+            <a href="#jobs" class="sidebar-link"><i class="fas fa-briefcase me-2"></i> Jobs</a>
+            <a href="#calendar" class="sidebar-link"><i class="fas fa-calendar me-2"></i> Calendar</a>
+            <a href="#clients" class="sidebar-link"><i class="fas fa-users me-2"></i> Clients</a>
+            <a href="#inventory" class="sidebar-link"><i class="fas fa-tools me-2"></i> Inventory</a>
+            <a href="#reports" class="sidebar-link"><i class="fas fa-chart-bar me-2"></i> Reports</a>
+            <a href="#settings" class="sidebar-link"><i class="fas fa-cog me-2"></i> Settings</a>
+        </nav>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button id="sidebarToggle" class="btn btn-outline-secondary d-md-none">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="ms-auto d-flex align-items-center">
+                <div class="dropdown me-3">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="notificationsDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge bg-danger">3</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">New job request</a></li>
+                        <li><a class="dropdown-item" href="#">Equipment maintenance due</a></li>
+                        <li><a class="dropdown-item" href="#">Team meeting at 2 PM</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Active Jobs</h5>
+                        <h2 class="card-text">15</h2>
+                        <p class="mb-0"><small>↑ 5% from last week</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Revenue</h5>
+                        <h2 class="card-text">$12,450</h2>
+                        <p class="mb-0"><small>↑ 12% from last month</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Pending Jobs</h5>
+                        <h2 class="card-text">8</h2>
+                        <p class="mb-0"><small>↓ 2% from last week</small></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card stats-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Customer Rating</h5>
+                        <h2 class="card-text">4.8/5</h2>
+                        <p class="mb-0"><small>Based on 45 reviews</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs and Calendar Section -->
+        <div class="row">
+            <!-- Recent Jobs -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Jobs</h5>
+                        <button class="btn btn-sm btn-outline-primary" id="addJobBtn">Add New Job</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="jobsList">
+                            <!-- Jobs will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Calendar -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Weekly Schedule</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="calendar" class="row">
+                            <!-- Calendar will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Job Modal -->
+    <div class="modal fade" id="addJobModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New Job</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addJobForm">
+                        <div class="mb-3">
+                            <label class="form-label">Client Name</label>
+                            <input type="text" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Service Type</label>
+                            <select class="form-select" required>
+                                <option value="removal">Tree Removal</option>
+                                <option value="trimming">Tree Trimming</option>
+                                <option value="stump">Stump Removal</option>
+                                <option value="lawn">Lawn Service</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Date</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            <textarea class="form-control" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="saveJobBtn">Save Job</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample data
+        const jobs = [
+            { id: 1, client: 'John Smith', service: 'Tree Removal', date: '2025-01-03', status: 'pending' },
+            { id: 2, client: 'Sarah Johnson', service: 'Tree Trimming', date: '2025-01-04', status: 'in-progress' },
+            { id: 3, client: 'Mike Brown', service: 'Stump Removal', date: '2025-01-05', status: 'completed' }
+        ];
+
+        // DOM Elements
+        const jobsList = document.getElementById('jobsList');
+        const calendar = document.getElementById('calendar');
+        const addJobBtn = document.getElementById('addJobBtn');
+        const addJobModal = new bootstrap.Modal(document.getElementById('addJobModal'));
+        const saveJobBtn = document.getElementById('saveJobBtn');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            renderJobs();
+            renderCalendar();
+            initializeEventListeners();
+        });
+
+        // Render jobs list
+        function renderJobs() {
+            jobsList.innerHTML = jobs.map(job => `
+                <div class="task status-${job.status}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0">${job.client}</h6>
+                        <span class="badge bg-primary">${job.service}</span>
+                    </div>
+                    <small>${job.date}</small>
+                </div>
+            `).join('');
+        }
+
+        // Render calendar
+        function renderCalendar() {
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const today = new Date();
+            
+            // Create header row
+            let calendarHTML = days.map(day => `
+                <div class="col text-center">
+                    <strong>${day}</strong>
+                </div>
+            `).join('');
+            
+            // Create calendar days
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + i);
+                
+                // Find jobs for this date
+                const dateStr = date.toISOString().split('T')[0];
+                const dayJobs = jobs.filter(job => job.date === dateStr);
+                
+                calendarHTML += `
+                    <div class="col calendar-day">
+                        <div class="text-end">${date.getDate()}</div>
+                        ${dayJobs.map(job => `
+                            <div class="task status-${job.status}">
+                                <small>${job.client}</small>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            calendar.innerHTML = calendarHTML;
+        }
+
+        // Initialize event listeners
+        function initializeEventListeners() {
+            // Add job button
+            addJobBtn.addEventListener('click', () => {
+                addJobModal.show();
+            });
+
+            // Save job button
+            saveJobBtn.addEventListener('click', () => {
+                // Here you would typically save the form data
+                addJobModal.hide();
+                // Refresh the views
+                renderJobs();
+                renderCalendar();
+            });
+
+            // Sidebar toggle
+            sidebarToggle.addEventListener('click', () => {
+                document.querySelector('.sidebar').classList.toggle('active');
+            });
+
+            // Make tasks draggable between status columns
+            document.querySelectorAll('.task').forEach(task => {
+                task.addEventListener('dragstart', (e) => {
+                    e.dataTransfer.setData('text/plain', task.id);
+                });
+            });
+        }
+
+        // Handle sidebar navigation
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                // Here you would typically handle navigation
+            });
+        });
+    </script>
+</body>
+</html>
